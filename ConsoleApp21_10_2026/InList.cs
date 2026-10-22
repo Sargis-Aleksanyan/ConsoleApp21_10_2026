@@ -2,58 +2,63 @@
 {
     internal class List
     {
-        private int[] list;
+        private int[] _list;
 
         public int Count { get; private set; }
 
         public List()
         {
-            list = new int[4];
+            _list = new int[4];
             Count = 0;
         }
 
         private void Resize()
         {
-            int[] NewList = new int[list.Length * 2];
+            int[] NewList = new int[_list.Length * 2];
 
-            for (int i = 0; i < list.Length; i++)
+            for (int i = 0; i < _list.Length; i++)
             {
-                NewList[i] = list[i];
+                NewList[i] = _list[i];
             }
-            list = NewList;
+            _list = NewList;
         }
 
         public void Add(int number)
         {
-            if (Count == list.Length)
+            if (Count == _list.Length)
             {
                 Resize();
             }
 
-            list[Count] = number;
+            _list[Count] = number;
             Count++;
         }
 
         public void Insert(int index, int number)
         {
-            if (Count == list.Length)
+            if (index < 0 || index > Count)
+            {
+                throw new IndexOutOfRangeException("Index is out of range.");
+            }
+
+            if (Count == _list.Length)
             {
                 Resize();
             }
 
             if (index == Count)
             {
-                list[Count] = number;
+                _list[Count] = number;
                 Count++;
             }
             else
             {
                 for (int i = Count; i > index; i--)
                 {
-                    list[i] = list[i - 1];
+                    _list[i] = _list[i - 1];
                 }
 
-                list[index] = number;
+                _list[index] = number;
                 Count++;
             }
 
@@ -61,18 +66,27 @@
 
         public void RemoveAt(int index)
         {
+            if (index < 0 || index >= Count)
+            {
+                throw new IndexOutOfRangeException("Index is out of range.");
+            }
+
             for (int i = index; i < Count - 1; i++)
             {
-                list[i] = list[i + 1];
+                _list[i] = _list[i + 1];
             }
 
             Count--;
-            list[Count] = 0;
+            _list[Count] = 0;
         }
 
         public int Get(int index)
         {
-            return list[index];
+            if (index < 0 || index >= Count)
+            {
+                throw new IndexOutOfRangeException("Index is out of range.");
+            }
+            return _list[index];
         }
     }
 }
